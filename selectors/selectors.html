@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Selectors</title>
+		<style type="text/css">
+			
+			p {
+				padding: 10px;
+				border: 1px solid grey;
+				position: relative;
+			}
+
+			p:hover .sub-text {
+				display: block;
+			}
+
+			p:hover:after {
+				content: " (" attr(title) ")";
+				background: #ddddcc;
+				border: 1px solid green;
+			}
+
+			.sub-text {
+				display: none;
+				color: gray;
+				background: #eeeeee;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Selectors</h1>
+		<p id="hello" title="This is the hello world paragraph.">
+			Hello world
+			<span class="sub-text">
+				This is the sub-text.
+			</span>
+		</p>
+	</body>
+</html>

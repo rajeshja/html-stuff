@@ -1,0 +1,293 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Recommendations</title>
+	</head>
+	<body>
+		<style type="text/css">
+
+			#reco-gadget {
+				font-family: Verdana, Bitstream Vera Sans, sans-serif;
+				font-size: 0.8em;
+			}
+
+			table.recos {
+				margin: 0;
+				padding: 0;
+				border-collapse: collapse;
+				font-family: Verdana, Bitstream Vera Sans, sans-serif;
+				font-size: 0.8em;
+			}
+			
+			.recos td, .recos th {
+				border: solid black 1px;
+				margin: 0;
+				padding: 0;
+			}
+
+			.recos form {
+				margin: 0;
+				padding: 0;
+			}
+
+			.recos fieldset {
+				border: 0;
+				padding: 1px;
+				margin: 0;
+				font-size: 0.9em;
+			}
+
+			.recos fieldset input[type="radio"] {
+				margin: 0;
+				padding-left: 0px;
+				height: 9px;
+				width: 9px;
+			}
+
+			.recos fieldset input {
+				font-size: 0.9em;
+			}
+		</style>
+		<script  type="text/javascript" src="json2min.js"></script>
+		<script type="text/javascript">
+			function rate(radiobutton) {
+				row = radiobutton.parentNode.parentNode.parentNode.parentNode;
+				//row = document.getElementById("book" + rownum);
+				bookcell = row.getElementsByTagName("TD")[1];
+				ratingcell = row.getElementsByTagName("TD")[2];
+				bookname = bookcell.textContent;
+				ratingchoices = ratingcell.getElementsByTagName("FORM")[0].rating;
+				ratingvalue = 0;
+				if (ratingchoices.length < 1) return;
+				for (i=0; i<ratingchoices.length; i++) {
+					if (ratingchoices[i].checked) {
+						ratingvalue = ratingchoices[i].value;
+					}
+				}
+				var something;
+				if ((2+2) == 4) something = '1';
+				ratingcell.innerHTML = ("Rated " + ratingvalue + "! " + something);
+			}
+
+			function addnewbook() {
+				newbookrow = document.getElementById("newbookentry");
+				newbookname = newbookrow.getElementsByTagName("FORM")[0].newbook.value;
+				newid=(newbookrow.parentNode.getElementsByTagName("TR").length - 2) + 1;
+				newtr = document.getElementById("row-template").cloneNode(true);
+				newtr.removeAttribute("style");
+				//newtd = document.createElement("td");
+				//newtd2 = document.createElement("td");
+				//newtd2.appendChild(document.createTextNode(newbookname));
+				srtd = newtr.getElementsByTagName("TD")[0];
+				srtd.innerHTML = newid;
+				nametd = newtr.getElementsByTagName("TD")[1];
+				nametd.innerHTML = newbookname;
+				newtr.setAttribute("id", "book"+newid);
+				//newtd3 = document.createElement("td");
+				//newtr.appendChild(newtd);
+				//newtr.appendChild(newtd2);
+				//newtr.appendChild(newtd3);
+				newbookrow.parentNode.insertBefore(newtr, newbookrow);
+				return false;
+			}
+
+			function disableEnterKey(e)
+			{
+				var key;     
+				if(window.event)
+					key = window.event.keyCode; //IE
+				else
+					key = e.which; //firefox     
+				
+				return (key != 13);
+			}
+
+			var hash = new Array();
+			hash["a"] = "1";
+			hash["b"] = "2";
+			hash["c"] = "3";
+			hash["d"] = "4";
+
+			for (element in hash) {
+				document.write("element is " + hash[element]);
+			}
+
+			var BookRecord = function(name, rating) {
+				this.type = "record";
+				this.name = name;
+				if (rating) {
+					this.rating = rating;
+				}
+			}
+			
+			var BooksType = function(data) {
+
+				if (data) {
+					this.data = data;
+				} else {
+					this.data = new Object();
+					this.data.count = 0;
+				}
+
+				this.add = function(name, rating) {
+					if (!this.get(name)) {
+						//Add it
+						this.data[name.toLowerCase()] = new BookRecord(name, rating);
+						this.data.count += 1;
+					} else {
+						//Already exists
+						throw "Book already exists";
+					}
+				};
+			
+				this.get = function(name) {
+					return this.data[name.toLowerCase()];
+				}
+			
+				this.save = function(name, rating) {
+					if (!this.get(name)) {
+						this.add(name, rating);
+					} else {
+						this.get(name).rating = rating;
+					}
+				}
+				
+			}
+
+			document.write("<br/>");
+			books = new BooksType();
+
+			books.add("Book1", 3.5);
+			books.add("Book2", 4);
+			books.add("Book3", 2);
+			books.save("Book3", 5);
+			
+			try {
+				books.add("Book1", 4);
+			} catch (e){
+				document.write(e + "<br/>");
+			}
+
+			for (record in books.data) {
+				if (books.data[record].type == "record") {
+					book = books.data[record];
+					document.write(book.name + " is rated = " + book.rating + "<br/>"); 
+				}
+			}
+
+			stringed = JSON.stringify(books.data);
+			document.write("Stringed is " + stringed+ "<br/>");
+
+			books = new BooksType(JSON.parse(stringed));
+
+			try {
+				books.add("Book7", 7);
+			} catch (e){
+				document.write(e + "<br/>");
+			}
+			
+			document.write("Converted back and forth<br/>");
+
+			for (record in books.data) {
+				if (books.data[record].type == "record") {
+					book = books.data[record];
+					document.write(book.name + " is rated = " + book.rating + "<br/>"); 
+				}
+			}
+			
+
+		</script>
+		<div id="reco-gadget">
+			<h1>Recommendations</h1>
+			<table class="recos">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Book</th>
+						<th>Rating (5=Love it, 1=Trash)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="book1">
+						<td>1</td>
+						<td>Book 1</td>
+						<td>
+							<form action="rate.it">
+								<fieldset class="rate-it">
+									<input type="radio" name="rating" value="5" onchange="rate(this)" /> 5 
+									<input type="radio" name="rating" value="4" onchange="rate(this)" /> 4
+									<input type="radio" name="rating" value="3" onchange="rate(this)" /> 3 
+									<input type="radio" name="rating" value="2" onchange="rate(this)" /> 2 
+									<input type="radio" name="rating" value="1" onchange="rate(this)" /> 1 
+								</fieldset>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>Book 2</td>
+						<td>Score: 25</td>
+					</tr>
+					<tr id="book3">
+						<td>3</td>
+						<td>Book 3</td>
+						<td>
+							<form action="rate.it">
+								<fieldset class="rate-it">
+									<input type="radio" name="rating" value="5" onchange="rate(this)" /> 5 
+									<input type="radio" name="rating" value="4" onchange="rate(this)" /> 4
+									<input type="radio" name="rating" value="3" onchange="rate(this)" /> 3 
+									<input type="radio" name="rating" value="2" onchange="rate(this)" /> 2 
+									<input type="radio" name="rating" value="1" onchange="rate(this)" /> 1 
+								</fieldset>
+							</form>
+						</td>
+					</tr>
+					<tr id="book4">
+						<td>4</td>
+						<td>Book 4</td>
+						<td>
+							<form action="rate.it">
+								<fieldset class="rate-it">
+									<input type="radio" name="rating" value="5" onchange="rate(this)" /> 5 
+									<input type="radio" name="rating" value="4" onchange="rate(this)" /> 4
+									<input type="radio" name="rating" value="3" onchange="rate(this)" /> 3 
+									<input type="radio" name="rating" value="2" onchange="rate(this)" /> 2 
+									<input type="radio" name="rating" value="1" onchange="rate(this)" /> 1 
+								</fieldset>
+							</form>
+						</td>
+					</tr>
+					<tr id="newbookentry">
+						<td></td>
+						<td>Book Name: 
+						<form onkeypress="return disableEnterKey(event)">
+							<fieldset>
+								<input type="text" name="newbook"/>
+								<input type="button" value="Add" onclick="addnewbook()"/>
+							</fieldset>
+						</form>
+						</td>
+						<td>
+						</td>
+					</tr>
+					<tr id="row-template" style="display: none;">
+						<td>0</td>
+						<td>Book 0</td>
+						<td>
+							<form action="rate.it">
+								<fieldset class="rate-it">
+									<input type="radio" name="rating" value="5" onchange="rate(this)" /> 5 
+									<input type="radio" name="rating" value="4" onchange="rate(this)" /> 4
+									<input type="radio" name="rating" value="3" onchange="rate(this)" /> 3 
+									<input type="radio" name="rating" value="2" onchange="rate(this)" /> 2 
+									<input type="radio" name="rating" value="1" onchange="rate(this)" /> 1 
+								</fieldset>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+	</body>
+</html>

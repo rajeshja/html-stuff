@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+	<uri resource="basic.html" uri="../../../../software/emacs-addons/nxml-mode-20041004/schema/whattf/html5.rnc"/>
+	<uri resource="basic.html" uri="../html5-rnc/html5.rnc"/>
+</locatingRules>

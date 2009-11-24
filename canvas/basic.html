@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Canvas Basic Usage</title>
+		<style type="text/css">
+			body {
+				font-family: Verdana, Bit Stream Vera Sans, Arial, sans-serif;
+				font-size: 9pt;
+			}
+			
+			canvas {
+				background: #ddddff;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Canvas Basic Usage</h1>
+		<p>
+			A regular paragraph to show some text on the page. 
+		</p>
+		<canvas id="tutorial" width="450px" height="300px">
+			<p>This is the canvas</p>
+		</canvas>
+		<p>
+			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec hendrerit tempor tellus. Donec pretium posuere tellus. Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla posuere. Donec vitae dolor. Nullam tristique diam non turpis. Cras placerat accumsan nulla. Nullam rutrum. Nam vestibulum accumsan nisl.
+		</p>
+		<p>
+		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec hendrerit tempor tellus. Donec pretium posuere tellus. Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla posuere. Donec vitae dolor. Nullam tristique diam non turpis. Cras placerat accumsan nulla. Nullam rutrum. Nam vestibulum accumsan nisl.</p>
+		<script type="text/javascript">
+			var canvas = document.getElementById("tutorial");
+			var ctx = canvas.getContext("2d");
+
+			ctx.fillStyle = "rgb(200,0,0)";
+			ctx.fillRect (10, 10, 55, 50);
+			
+			ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+			ctx.fillRect (30, 30, 55, 50);
+
+			ctx.beginPath();
+			ctx.arc(175,175,50,0,Math.PI*2,true); // Outer circle
+			ctx.moveTo(210,175);
+			ctx.arc(175,175,35,0,Math.PI,false);   // Mouth (clockwise)
+			ctx.moveTo(165,165);
+			ctx.arc(160,165,5,0,Math.PI*2,true);  // Left eye
+			ctx.moveTo(195,165);
+			ctx.arc(190,165,5,0,Math.PI*2,true);  // Right eye
+			ctx.stroke();
+
+		</script>
+	</body>
+</html>

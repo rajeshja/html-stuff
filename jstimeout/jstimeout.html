@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Time out testing</title>
+		<script type="text/javascript" src="addEvent2.js"></script>
+		<script type="text/javascript">
+			
+			function showMessage() {
+				var popup = document.getElementById("popup-wrapper");
+				popup.className = "shown";
+			}
+			
+			function doOk(e) {
+				var popup = document.getElementById("popup-wrapper");
+				popup.className = "hidden";
+				//e.cancelBubble = true;
+				return false;
+			}
+
+			function doCancel(e) {
+				//alert("Call the required code");
+				//e.cancelBubble = true;
+				return false;
+			}
+
+			function setPopupEvents(e) {
+				var ok = document.getElementById("popup-ok");
+				addEvent(ok, "click", doOk);
+
+				var cancel = document.getElementById("popup-cancel");
+				addEvent(cancel, "click", doCancel);
+
+			}
+
+			setTimeout("showMessage()", 1000);
+			addEvent(window, "load", setPopupEvents);
+		</script>
+		<style type="text/css">
+
+			body {
+				font-family: Verdana;
+				font-size: 75%;
+			}
+
+			#wrapper {
+				width: 750px;
+			}
+
+			#popup-wrapper {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 100;
+				text-align: center;
+				background: url(overlay.gif);
+			}
+
+			.hidden {
+				visibility: hidden;
+			}
+
+			.shown {
+				visibility: visible;
+			}
+
+			#popup-wrapper #popup {
+				/* position: fixed; */
+				width: 300px;
+				margin: 150px auto 100% auto;
+				background: #b0b0b0;
+				border-top: 2px solid #c0c0c0;
+				border-right: 2px solid #808080;
+				border-bottom: 2px solid #808080;
+				border-left: 2px solid #c0c0c0;
+				padding: 20px;
+				text-align: left;
+				overflow: hidden;
+			}
+
+			#popup .buttons {
+				text-align: center;
+			}
+
+			.popup-button {
+				display: block;
+				border-top: 1px solid #d0d0d0;
+				border-right: 1px solid #606060;
+				border-bottom: 1px solid #606060;
+				border-left: 1px solid #d0d0d0;
+				margin: 20px 10px;
+				padding: 5px;
+				text-decoration: none;
+				min-width: 75px;
+				height: 15px;
+				color: black;
+			}
+
+			.popup-button:active {
+				border-top: 1px solid #606060;
+				border-right: 1px solid #d0d0d0;
+				border-bottom: 1px solid #d0d0d0;
+				border-left: 1px solid #606060;
+			}
+
+			.popup-button-left {
+				float: left;
+				margin-right: 0;
+			}
+
+			.popup-button-right {
+				float: right;
+				margin-left: 0px;
+			}
+
+		</style>
+		<!--[if IE 6]>
+			<style type="text/css">
+
+				.popup-button {
+					width: 75px;
+				}
+			</style>
+		<![endif]-->
+	</head>
+	<body>
+		<h1>Time out testing</h1>
+		
+		<div id="wrapper">
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  <a href="http://www.google.com">Google</a> puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+			<p>
+				ewfjgh hghg hg bv hbv p9ehv uhgu qopdhfkl;cn  rpquohewv puefv qpuhgf uhv quhv qnv qe fpuhfv qpuhv uhv uh
+			</p>
+		</div>
+
+		<div id="popup-wrapper" class="hidden">
+			<div id="popup">
+				<p>Your session is going to time out soon. Please click 'ok' to continue with the remaining time, or 'cancel' to logout immediately.
+				</p>
+				<div class="buttons">
+					<a id="popup-ok" class="popup-button popup-button-left" href="#">Ok </a>
+					<a id="popup-cancel" class="popup-button popup-button-right" href="#">Cancel</a>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

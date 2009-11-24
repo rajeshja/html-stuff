@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Vertical graphs</title>
+		<style type="text/css">
+
+			body {
+				font-family: Verdana, sans-serif;
+				font-size: 75%;
+			}
+
+			#vertgraph {
+				width: 378px;
+				height: 207px;
+	      position: relative;
+	      background: #a0a0a0;
+	    }
+	
+	    #vertgraph ul {
+	      width: 378px;
+	      height: 207px;
+	      margin: 0;
+	      padding: 0;
+	    }
+	
+	    #vertgraph ul li {
+	      position: absolute;
+	      width: 28px;
+	      height: 160px;
+	      bottom: 34px;
+	      padding: 0 !important;
+	      margin: 0 !important;
+	      background: #4040a0;
+	      text-align: center;
+	      font-weight: bold;
+	      color: white;
+	      line-height: 2.5em;
+				list-style-type: none;
+	    }
+	
+	    #vertgraph li.critical { left: 24px; }
+	    #vertgraph li.high { left: 101px; }
+	    #vertgraph li.medium { left: 176px; }
+	    #vertgraph li.low { left: 251px; }
+	    #vertgraph li.info { left: 327px; }
+
+		</style>
+	</head>
+	<body>
+		<h1>Vertical graphs</h1>
+
+		<div id="vertgraph">
+			<ul>
+				<li class="critical" style="height: 150px;">22</li>
+				<li class="high" style="height: 80px;">7</li>
+				<li class="medium" style="height: 50px;">3</li>
+				<li class="low" style="height: 90px;">8</li>
+				<li class="info" style="height: 40px;">2</li>
+			</ul>
+		</div>
+		
+	</body>
+</html>
