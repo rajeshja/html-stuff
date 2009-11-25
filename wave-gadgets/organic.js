@@ -58,7 +58,11 @@ function drawWord(word) {
 
 function makeCurrent(e) {
 	w = e.target;
-	
+	pos = w.position();
+	for (i=0; i<w.prevWords.length; i++) {
+		drawLine(new Point(w.prevWords[i].position().left, w.prevWords[i].position().top),
+				 new Point(pos.left, pos.top));
+	}
 }
 
 function setup() {
@@ -69,8 +73,10 @@ function setup() {
 	
 	$("#organic-poetry").append(start);
 
-	drawWord(new Word("If", new Position(50,50)));
+	w = new Word("If", new Position(50,50));
+	drawWord(w);
 	drawLine(new Point(10,10), new Point(50,50));
+	w.prevWords[0] = start;
 }
 
 $(document).ready(setup);
