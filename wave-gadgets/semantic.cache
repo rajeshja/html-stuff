@@ -1,0 +1,15 @@
+;; Object wave-gadgets/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "wave-gadgets/"
+  :tables (list 
+   (semanticdb-table "organic-poetry.html"
+    :major-mode 'html-mode
+    :tags '(("Organic Poetry" section nil nil #<overlay from 72 to 166 in organic-poetry.html>) ("Organic Poetry" section nil nil #<overlay from 166 to 231 in organic-poetry.html>) ("Organic Poetry" section nil nil #<overlay from 231 to 310 in organic-poetry.html>) ("Organic Poetry" section nil nil #<overlay from 310 to 378 in organic-poetry.html>) ("Organic Poetry" section (:members (("Organic Poetry" section nil nil #<overlay from 387 to 390 in organic-poetry.html>))) nil #<overlay from 378 to 383 in organic-poetry.html>))
+    :file "organic-poetry.html"
+    :pointmax 529
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre4"
+  :semanticdb-version "2.0pre4"
+  )

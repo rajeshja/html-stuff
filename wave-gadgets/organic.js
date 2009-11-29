@@ -50,7 +50,25 @@ function drawWord(word) {
 		word.text +
 		'</div>';
 	w = $(worddiv);
-	w.draggable();
+	w.draggable({
+
+			// Find original position of dragged image.
+			start: function(event, ui) {
+				
+				// Show start dragged position of image.
+				var Startpos = $(this).position();
+				$("div#start").text("START: \nLeft: "+ Startpos.left + "\nTop: " + Startpos.top);
+			},
+				
+				// Find position where image is dropped.
+				stop: function(event, ui) {
+				
+				// Show dropped position.
+				var Stoppos = $(this).position();
+				$("div#stop").text("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
+			}
+		});
+		
 	w.mouseup(makeCurrent);
 	w.css(word.position);
 	$("#organic-poetry").append(w);
@@ -58,7 +76,7 @@ function drawWord(word) {
 
 function makeCurrent(e) {
 	w = e.target;
-	pos = w.position();
+	//pos = w.position();
 	for (i=0; i<w.prevWords.length; i++) {
 		drawLine(new Point(w.prevWords[i].position().left, w.prevWords[i].position().top),
 				 new Point(pos.left, pos.top));
