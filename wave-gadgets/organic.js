@@ -30,8 +30,8 @@ function Word(text, position, frompos) {
 	this.text = text;
 	this.position = position;
 	
-	this.nextWords = {};
-	this.prevWords = {};
+	this.nextWords = { "type" : "list" };
+	this.prevWords = { "type" : "list" };
 	words[this.id] = this;
 
 }
@@ -57,7 +57,7 @@ function drawWord(word) {
 				
 				// Show start dragged position of image.
 				var Startpos = $(this).position();
-				$("div#start").text("START: \nLeft: "+ Startpos.left + "\nTop: " + Startpos.top);
+				$("div#start").text("START: Left: "+ Startpos.left + "Top: " + Startpos.top);
 			},
 				
 				// Find position where image is dropped.
@@ -65,7 +65,7 @@ function drawWord(word) {
 				
 				// Show dropped position.
 				var Stoppos = $(this).position();
-				$("div#stop").text("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
+				$("div#stop").text("STOP: Left: "+ Stoppos.left + "Top: " + Stoppos.top);
 			}
 		});
 		
@@ -75,10 +75,11 @@ function drawWord(word) {
 }
 
 function makeCurrent(e) {
-	w = e.target;
-	//pos = w.position();
-	for (i=0; i<w.prevWords.length; i++) {
-		drawLine(new Point(w.prevWords[i].position().left, w.prevWords[i].position().top),
+	word = e.target;
+	w = words[word.id];
+	pos = w.position;
+	for (prevWord in w.prevWords) {
+		drawLine(new Point(prevWord.left, prevWord.top),
 				 new Point(pos.left, pos.top));
 	}
 }
