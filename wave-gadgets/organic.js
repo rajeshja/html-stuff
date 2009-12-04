@@ -1,8 +1,11 @@
 var lastId = 1;
 
-var curr = "";
+var curr = undefined;
 
 var words = {};
+
+var canvasheight = 295;
+var canvaswidth = 295;
 
 function Point(x, y) {
 	this.x = x;
@@ -47,6 +50,22 @@ function Word(text, location, id, type) {
 		this.nextWords[this.nextWords.length] = next;
 	}
 
+	this.removePrev = function(word) {
+		for (var i=0; i<this.prevWords.length; i++) {
+			if (word.id == this.prevWords[i].id) {
+				this.prevWords.splice(i, 1);
+			}
+		}
+	}
+
+	this.removeNext = function(word) {
+		for (var i=0; i<this.nextWords.length; i++) {
+			if (word.id == this.nextWords[i].id) {
+				this.nextWords.splice(i, 1);
+			}
+		}
+	}
+
 	if (type) {
 		this.type = type;
 	}
@@ -74,24 +93,31 @@ function clearLine(frompos, topos) {
 }
 
 function drawWord(word) {
-	var worddiv = '<div id="' + word.id + '" class="word">' +
-		word.text +
-		'</div>';
-	var w = $(worddiv);
-	w.draggable({start: recordStartPoint, stop: redrawConnectors});
+	var w;
+	//Checking for $("#"+word.id) retrieves an object.
+	//Need to read more about $().
+	if (!document.getElementById(word.id)) {
+		var worddiv = '<div id="' + word.id + '" class="word">' +
+			word.text +
+			'</div>';
+		w = $(worddiv);
+		w.draggable({start: recordStartPoint, stop: redrawConnectors});
+		w.click(makeCurrent);
+		$("#organic-poetry").append(w);
+	} else {
+		w = $(word.id);
+	}
 		
-	w.mouseup(makeCurrent);
 	w.css(new Position(word.location.x, word.location.y));
-	$("#organic-poetry").append(w);
 }
 
-function redrawLines(w) {
-	//drawWord(w);
+function redrawFrom(w) {
+	drawWord(w);
 
 	for (var i=0; i<w.nextWords.length; i++) {
 		var nextWord = w.nextWords[i];
 		drawLine(w.location, nextWord.location);
-		redrawLines(nextWord);
+		redrawFrom(nextWord);
 	}
 }
 
@@ -127,12 +153,69 @@ function redrawConnectors(e, ui) {
 function resizeCanvas(e, ui) {
 	var canvas = document.getElementById('op-back');
 	canvas.setAttribute("height", ui.size.height-5);
+	canvasheight = ui.size.height-5;
 	canvas.setAttribute("width", ui.size.width-5);
+	canvaswidth = ui.size.width-5;
 
-	redrawLines(words["start-node"]);
+	redrawFrom(words["start-node"]);
 }
 
 function makeCurrent(e) {
+	if (curr) {
+		$("#"+curr.id).removeClass("selected");
+	}
+	curr = words[this.id];
+	$(this).addClass("selected");
+}
+
+function updateCurrent(word) {
+	if (curr) {
+		$("#"+curr.id).removeClass("selected");
+	}
+	curr = word;
+	$("#"+word.id).addClass("selected");
+}
+
+function addWord(e) {
+	if ((curr.id == "start-node")
+		&& (curr.nextWords.length != 0)) {
+		return;
+	}
+
+	var n = new Word($("#newWord").val(),
+					 new Point(curr.location.x, curr.location.y+20));
+	n.addPrev(curr);
+	curr.addNext(n);
+	drawWord(n);
+	drawLine(curr.location, n.location);
+	updateCurrent(n);
+}
+
+function deleteSelected(e) {
+	if (curr && (curr.id != "start-node")) {
+		deleteSubTree(curr);
+		curr = undefined;
+	}
+	var canvas = document.getElementById('op-back');
+	canvas.setAttribute("width", canvaswidth);
+	redrawFrom(words["start-node"]);
+}
+
+function deleteSubTree(word) {
+	$("#"+word.id).remove();
+
+	for (var i=0; i<word.prevWords.length; i++) {
+		var prevWord = word.prevWords[i];
+		clearLine(prevWord.location, word.location);
+		prevWord.removeNext(word);
+		word.removePrev(prevWord);
+	}
+	for (var i=0; i<word.nextWords.length; i++) {
+		var nextWord = word.nextWords[i];
+		deleteSubTree(nextWord);
+	}
+	
+	words[word.id] = undefined;
 }
 
 function setup() {
@@ -141,7 +224,8 @@ function setup() {
 
 	var s = new Word("Start", new Point(10,10), "start-node", "start");
 	drawWord(s);
-
+	curr = s;
+	
 	//var startdiv = '<div id="start-node" class="word">Start</div>';
 	//var start = $(startdiv);
 	//start.draggable();
@@ -160,6 +244,9 @@ function setup() {
 	w.addNext(w1);
 	drawWord(w1);
 	drawLine(w.location, w1.location);
+
+	$("#add").click(addWord);
+	$("#delete").click(deleteSelected);
 
 }
 

@@ -1,3 +1,9 @@
+#op-container {
+	font-family: Verdana, Bitstream Vera Sans, sans-serif;
+	font-size: 9px;
+	font-weight: bold;
+}
+
 #organic-poetry {
 	width: 295px;
 	height: 295px;
@@ -5,6 +11,9 @@
 	position: relative;
 	overflow: auto;
 	border: 1px solid #a08080;
+}
+
+#controls input {
 	font-family: Verdana, Bitstream Vera Sans, sans-serif;
 	font-size: 9px;
 	font-weight: bold;
@@ -32,4 +41,9 @@
 	z-index: 10;
 	cursor: pointer;
 	background: #ffffff;
+}
+
+.selected {
+	background: #ddddff !important;
+	border-color: #0000ff;
 }

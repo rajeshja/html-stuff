@@ -11,12 +11,19 @@
 	</head>
 	<body>
 		<h1>Organic Poetry</h1>
-		
-		<div id="stop">Waiting for dragging the image get started...</div>
-		<div id="organic-poetry">
-			<canvas id="op-back" width="295px" height="295px"></canvas>
-		</div>
 
+		<div id="op-container">
+			<div id="stop">Waiting for dragging the image get started...</div>
+			<div id="controls">
+				<input id="newWord" type="text" value=""/>
+				<input id="add" type="button" value="Add"/>
+				Or
+				<input id="delete" type="button" value="Delete Subtree"/>
+			</div>
+			<div id="organic-poetry">
+				<canvas id="op-back" width="295px" height="295px"></canvas>
+			</div>
+		</div>
 		<div id="debug"></div>
 		
 	</body>
