@@ -4,8 +4,8 @@ var curr = undefined;
 
 var words = {};
 
-var canvasheight = 295;
-var canvaswidth = 295;
+var canvasheight = 290;
+var canvaswidth = 290;
 
 function Point(x, y) {
 	this.x = x;
@@ -220,8 +220,12 @@ function deleteSubTree(word) {
 
 function setup() {
 
-	$("#organic-poetry").resizable({stop: resizeCanvas});
-
+	root = $("#organic-poetry");
+	root.resizable({stop: resizeCanvas});
+	var canvas = document.getElementById('op-back');
+	canvas.setAttribute("height", root.height()-5);
+	canvas.setAttribute("width", root.width()-5);
+	
 	var s = new Word("Start", new Point(10,10), "start-node", "start");
 	drawWord(s);
 	curr = s;
