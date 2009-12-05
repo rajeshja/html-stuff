@@ -185,13 +185,15 @@ function addWords(e) {
 	var entered = $("#newWord").val().split(" ");
 
 	for(i=0; i<entered.length; i++) {
-		var n = new Word(entered[i],
-						 new Point(curr.location.x, curr.location.y+20));
-		n.addPrev(curr);
-		curr.addNext(n);
-		drawWord(n);
-		drawLine(curr.location, n.location);
-		updateCurrent(n);
+		if (entered[i] && (entered[i].length>0)) {
+			var n = new Word(entered[i],
+							 new Point(curr.location.x, curr.location.y+20));
+			n.addPrev(curr);
+			curr.addNext(n);
+			drawWord(n);
+			drawLine(curr.location, n.location);
+			updateCurrent(n);
+		}
 	}
 
 }
