@@ -1,8 +1,23 @@
-var lastId = 1;
+var Wave = function() {
+	this.state = {};
+	this.getState = function() {
+		return this.state;
+	}
+
+	this.util = new Util();
+};
+
+var Util = function() {
+	this.printJson = function() {
+		return;
+	}
+};
+
+var lastId = undefined;
 
 var curr = undefined;
 
-var words = {};
+var words = undefined;
 
 var canvasheight = 290;
 var canvaswidth = 290;
@@ -33,6 +48,7 @@ function Word(text, location, id, type) {
 	} else {
 		this.id = 'w' + lastId;
 		lastId ++;
+		wave.getState().submitValue('lastId', lastId);
 	}
 
 	this.text = text;
@@ -41,6 +57,7 @@ function Word(text, location, id, type) {
 	this.nextWords = [];
 	this.prevWords = [];
 	words[this.id] = this;
+	wave.getState().submitValue(this.id, wave.util.printJson(this));
 
 	this.addPrev = addPrev;
 	this.addNext = addNext;
@@ -72,6 +89,15 @@ function removeNext(word) {
 			this.nextWords.splice(i, 1);
 		}
 	}
+}
+
+function toWord(word) {
+	word.addPrev = addPrev;
+	word.addNext = addNext;
+	word.removePrev = removePrev;
+	word.removeNext = removeNext;
+
+	return word;
 }
 
 function drawLine(frompos, topos) {
@@ -127,12 +153,15 @@ function recordStartPoint(e, ui) {
 	var w = words[this.id];
 	var pos = $(this).position();
 	w.oldPos = new Point(pos.left, pos.top);
+
+	wave.getState().submitValue(w.id, wave.util.printJson(w));
 }
 
 function redrawConnectors(e, ui) {
 	var w = words[this.id];
 	var pos = $(this).position();
 	w.location = new Point(pos.left, pos.top);
+	wave.getState().submitValue(w.id, wave.util.printJson(w));
 	
 	for (var i=0; i<w.prevWords.length; i++) {
 		var prevWord = w.prevWords[i];
@@ -167,14 +196,19 @@ function makeCurrent(e) {
 		$("#"+curr.id).removeClass("selected");
 	}
 	curr = words[this.id];
+	wave.getState().submitValue('curr', wave.util.printJson(curr));
 	$(this).addClass("selected");
 }
 
+/* This function does not update state, for optimization purposes. Callers
+ * should ensure state is updated at the right time. 
+ */
 function updateCurrent(word) {
 	if (curr) {
 		$("#"+curr.id).removeClass("selected");
 	}
 	curr = word;
+	//wave.getState().submitValue('curr', wave.util.printJson(curr));
 	$("#"+word.id).addClass("selected");
 }
 
@@ -192,18 +226,23 @@ function addWords(e) {
 							 new Point(curr.location.x, curr.location.y+20));
 			n.addPrev(curr);
 			curr.addNext(n);
+
+			wave.getState().submitValue(n.id, wave.util.printJson(n));
+
 			drawWord(n);
 			drawLine(curr.location, n.location);
 			updateCurrent(n);
 		}
 	}
-
+	//Updating curr state only at the end to minimize need to sync.
+	wave.getState().submitValue('curr', wave.util.printJson(curr));
 }
 
 function deleteSelected(e) {
 	if (curr && (curr.id != "start-node")) {
 		deleteSubTree(curr);
 		curr = undefined;
+		wave.getState().submitValue('curr', undefined);
 	}
 	var canvas = document.getElementById('op-back');
 	canvas.setAttribute("width", canvaswidth);
@@ -226,42 +265,85 @@ function deleteSubTree(word) {
 	}
 	
 	words[word.id] = undefined;
+	wave.getState().submitValue(word.id, undefined);
 }
 
-function setup() {
-
-	root = $("#organic-poetry");
-	root.resizable({stop: resizeCanvas});
-	var canvas = document.getElementById('op-back');
-	canvas.setAttribute("height", root.height()-5);
-	canvas.setAttribute("width", root.width()-5);
-	
-	var s = new Word("Start", new Point(10,10), "start-node", "start");
-	drawWord(s);
-	curr = s;
-	
-	//var startdiv = '<div id="start-node" class="word">Start</div>';
-	//var start = $(startdiv);
-	//start.draggable();
-	//start.css(new Position(10,10));
-	//
-	//$("#organic-poetry").append(start);
-
-	var w = new Word("If", new Point(50,50));
-	s.addNext(w);
-	w.addPrev(s);
-	drawWord(w);
-	drawLine(s.location, w.location);
-
-	var w1 = new Word("you", new Point(100,50));
-	w1.addPrev(w);
-	w.addNext(w1);
-	drawWord(w1);
-	drawLine(w.location, w1.location);
-
-	$("#add").click(addWords);
-	$("#delete").click(deleteSelected);
-
+function clearState() {
+	log("<br/>Clearing state.");
+	wave.getState().reset();
 }
 
-$(document).ready(setup);
+/*
+ * This function should be called on first load of the gadget.
+ * This should setup initial state of elements if not already set.
+ */
+function stateUpdated() {
+
+	var state = wave.getState();
+
+	if (state.get('curr') == 'undefined') {
+		state.reset();
+	}
+
+	wave.log(wave.util.printJson(state));
+	log(wave.util.printJson(state));
+
+	//Update last Id from state.
+	lastStored = state.get('lastId');
+	if (lastStored) {
+		lastId = parseInt(lastStored);
+	} else {
+		lastId = 1;
+		wave.getState().submitValue('lastId', 1);
+	}
+
+	//Update word list.
+	words = {};
+	//Loop through state looking for all words
+	//This should mean all state variables != lastId and curr.
+	for (key in state.getKeys()) {
+		if ((key != 'lastId') && (key != 'curr')) {
+			word = toWord(eval(state.get(key)));
+			words[word.id] = word;
+		}
+	}
+
+	//Setup curr. If curr doesn't exist in state, assume first load.
+	//If it exists in state, then we now have all information required
+	//to draw the canvas
+	if (!curr) {
+		//Setup event handlers.
+		root = $("#organic-poetry");
+		root.resizable({stop: resizeCanvas});
+		var canvas = document.getElementById('op-back');
+		canvas.setAttribute("height", root.height()-5);
+		canvas.setAttribute("width", root.width()-5);
+		
+		$("#clear").click(clearState);
+		$("#add").click(addWords);
+		$("#delete").click(deleteSelected);
+	} else {
+		log("<br/>But curr was not null");
+	}
+
+	//Restore curr from state.
+	currStored = state.get('curr');
+	if (currStored) {
+		curr = toWord(eval(currStored));
+		//Deleting all existing nodes, and redrawing.
+		//Need to optimize this so only changes are redrawn.
+		var firstWord = words["start-node"].nextWord[0];
+		if (firstWord) {
+			deleteSubTree(firstWord);
+		}
+		redrawFrom(words["start-node"]);
+		updateCurrent(curr);
+	} else {
+		var s = new Word("Start", new Point(10,10), "start-node", "start");
+		drawWord(s);
+		updateCurrent(s);
+		wave.getState().submitValue('curr', wave.util.printJson(curr));
+	}
+}
+
+$(document).ready(stateUpdated);
