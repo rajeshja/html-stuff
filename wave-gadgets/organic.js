@@ -42,34 +42,36 @@ function Word(text, location, id, type) {
 	this.prevWords = [];
 	words[this.id] = this;
 
-	this.addPrev = function(prev) {
-		this.prevWords[this.prevWords.length] = prev;
-	}
-
-	this.addNext = function(next) {
-		this.nextWords[this.nextWords.length] = next;
-	}
-
-	this.removePrev = function(word) {
-		for (var i=0; i<this.prevWords.length; i++) {
-			if (word.id == this.prevWords[i].id) {
-				this.prevWords.splice(i, 1);
-			}
-		}
-	}
-
-	this.removeNext = function(word) {
-		for (var i=0; i<this.nextWords.length; i++) {
-			if (word.id == this.nextWords[i].id) {
-				this.nextWords.splice(i, 1);
-			}
-		}
-	}
+	this.addPrev = addPrev;
+	this.addNext = addNext;
+	this.removePrev = removePrev;
+	this.removeNext = removeNext;
 
 	if (type) {
 		this.type = type;
 	}
 
+}
+
+function addPrev(prev) {
+	this.prevWords[this.prevWords.length] = prev;
+}
+function addNext(next) {
+	this.nextWords[this.nextWords.length] = next;
+}
+function removePrev(word) {
+	for (var i=0; i<this.prevWords.length; i++) {
+		if (word.id == this.prevWords[i].id) {
+			this.prevWords.splice(i, 1);
+		}
+	}
+}
+function removeNext(word) {
+	for (var i=0; i<this.nextWords.length; i++) {
+		if (word.id == this.nextWords[i].id) {
+			this.nextWords.splice(i, 1);
+		}
+	}
 }
 
 function drawLine(frompos, topos) {
@@ -220,6 +222,7 @@ function deleteSubTree(word) {
 	for (var i=0; i<word.nextWords.length; i++) {
 		var nextWord = word.nextWords[i];
 		deleteSubTree(nextWord);
+		i--;
 	}
 	
 	words[word.id] = undefined;
